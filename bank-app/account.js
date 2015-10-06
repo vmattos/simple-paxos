@@ -1,16 +1,12 @@
 var machine = require('./state-machine');
 
-var state = {
-  accounts: []
-}
-
 var idCounter = 0;
 
 var Account = function(id) {
   this.id = idCounter++;
   this.balance = 0;
 
-  state.accounts[this.id] = this.balance;
+  machine.state.accounts[this.id] = this.balance;
 }
 
 Account.prototype.deposit = function(value, callback) {
@@ -23,13 +19,12 @@ Account.prototype.deposit = function(value, callback) {
   }
 
   this.balance += value;
-  state = machine.executeOperation(state, {
+
+  machine.executeOperation({
     name: 'deposit',
     targetAccount: this.id,
     amount: value
   });
-
-  console.log(state)
 
   return cb(value, err);
 }
@@ -44,13 +39,12 @@ Account.prototype.withdrawal = function(value, callback) {
   }
 
   this.balance -= value;
-  state = machine.executeOperation(state, {
+
+  machine.executeOperation({
     name: 'withdrawal',
     targetAccount: this.id,
     amount: value
   });
-
-  console.log(state)
 
   cb(value, err)
 }

@@ -1,14 +1,18 @@
-var StateMachine = function() {}
+var StateMachine = function() {
+  this.state = {
+    accounts: []
+  }
+}
 
-StateMachine.prototype.executeOperation = function(state, operation) {
+StateMachine.prototype.executeOperation = function(operation) {
   if (operation.name == 'deposit') {
-    state.accounts[operation.targetAccount] += operation.amount;
-    return state;
+    this.state.accounts[operation.targetAccount] += operation.amount;
+    return this.state;
   }
 
   if (operation.name == 'withdrawal') {
-    state.accounts[operation.targetAccount] -= operation.amount;
-    return state;
+    this.state.accounts[operation.targetAccount] -= operation.amount;
+    return this.state;
   }
 
 }
